@@ -21,14 +21,6 @@ app.use(morgan("common"));
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 
-// app.get("/", (req, res) => {
-//     res.send("welcome to homepage")
-// })
-
-// app.get("/users", (req, res) => {
-//     res.send("welcome to user page")
-// })
-
 app.listen(8080, () => {
     console.log("backend is running")
 });
