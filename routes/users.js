@@ -37,7 +37,7 @@ router.put("/:id", async (req, res) => {
 
 //delete user
 router.delete("/:id", async (req, res) => {
-    try{
+    try {
         const {userId} = req.body;
         if (userId === req.params.id) {
             const user = await User.findByIdAndDelete(req.params.id);
@@ -45,7 +45,7 @@ router.delete("/:id", async (req, res) => {
                 return res.status(404).json("User not found");
             return res.status(200).json("User deleted");
         }
-    } catch(err){
+    } catch(err) {
         console.log(err)
         return res.status(500).json(err);
     }
@@ -53,6 +53,20 @@ router.delete("/:id", async (req, res) => {
 
 
 // get a user
+router.get("/:id", async (req, res) => {
+    try {
+        const {userId} = req.body;
+        if (userId === req.params.id) {
+            const user = await User.findById(req.params.id);
+            if (!user)
+                return res.status(404).json("User not found");
+            return res.status(200).json(user);
+        }
+    } catch(err) {
+        console.log(err);
+        return res.status(500).json(err);
+    }
+});
 
 
 // follow a user
