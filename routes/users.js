@@ -58,9 +58,12 @@ router.get("/:id", async (req, res) => {
         const {userId} = req.body;
         if (userId === req.params.id) {
             const user = await User.findById(req.params.id);
+            // to fetch fields other than the one's mentioned below
+            const {password, updatedAt, ...other} = user._doc; 
+
             if (!user)
                 return res.status(404).json("User not found");
-            return res.status(200).json(user);
+            return res.status(200).json(other);
         }
     } catch(err) {
         console.log(err);
@@ -70,6 +73,27 @@ router.get("/:id", async (req, res) => {
 
 
 // follow a user
+router.put("/:id/follow", async (req, res) => {
+    try {
+        const {userId} = req.body;
+        if (userId != req.params.id) {
+            const user = await User.findById(req.params.id);
+            const currentUser = await User.findById(userId);
+            if (!user.followers.includes(userId)){
+                await user.updateOne({$push : {followers: userId}});
+                await currentUser.updateOne({$push : {following: req.params.id}});
+                return res.status(200).json("user has been followed");
+            } else {
+                return res.status(403).json("You already follow this user");
+            }
+        } else {
+            return res.status(403).json("You can't follow your own account");
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+    }
+});
 
 
 // unfollow a user
