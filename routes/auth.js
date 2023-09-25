@@ -15,10 +15,10 @@ router.post("/register", async (req, res) => {
         }
         );
         const user = await newUser.save();
-        res.status(200).json(user);
+        return res.status(200).json(user);
 
     } catch (err) {
-        res.status(500).json(err);
+        return res.status(500).json(err);
     }
 });
 
@@ -28,20 +28,20 @@ router.post("/login", async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
         if (user == null) {
-            res.status(404).json("User not found");
+            return res.status(404).json("User not found");
         }
         else {
             const passwd = await bcrypt.compare(req.body.password, user.password);
             if (passwd == false) {
-                res.status(404).json("wrong password");
+                return res.status(404).json("wrong password");
             }
             else{
-                res.status(200).json("login successful");
+                return res.status(200).json("login successful");
             }
         }
 
     } catch (err) {
-        res.status(500).json(err);
+        return res.status(500).json(err);
     }
 });
 
