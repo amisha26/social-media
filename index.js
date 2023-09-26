@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
+const postsRoute = require("./routes/posts");
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(morgan("common"));
 
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
+app.use("/api/posts", postsRoute);
 
 app.listen(8080, () => {
     console.log("backend is running")
